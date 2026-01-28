@@ -1,8 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { FlatList, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlatList } from 'react-native';
 import LogoutCard from '../components/settings/LogoutCard';
 import ProfileHeader from '../components/settings/ProfileHeader';
 import SettingCard from '../components/settings/SettingCard';
@@ -70,23 +69,20 @@ export default function Settings() {
     );
 
     return (
-        <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
-            <FlatList
-                data={settingsItems}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                numColumns={2}
-                ListHeaderComponent={() => <ProfileHeader onEditPress={handleEditProfile} />}
-                ListFooterComponent={() => (
-                    <>
-                        <LogoutCard onPress={handleLogout} />
-                        <View className="h-8" />
-                    </>
-                )}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
-                columnWrapperStyle={{ justifyContent: 'space-between' }}
-            />
-        </SafeAreaView>
+        <FlatList
+            data={settingsItems}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            numColumns={2}
+            ListHeaderComponent={() => <ProfileHeader onEditPress={handleEditProfile} />}
+            ListFooterComponent={() => (
+                <>
+                    <LogoutCard onPress={handleLogout} />
+                </>
+            )}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingHorizontal: 8, paddingTop: 16 }}
+            columnWrapperStyle={{ justifyContent: 'space-between' }}
+        />
     );
 }

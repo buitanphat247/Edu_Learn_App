@@ -10,7 +10,7 @@ interface ProfileHeaderProps {
 
 export default function ProfileHeader({ onEditPress }: ProfileHeaderProps) {
     return (
-        <View className="items-center pt-8 pb-6">
+        <View className="items-center pb-6">
             {/* Avatar with dashed border */}
             <View className="relative mb-4">
                 <View className="w-24 h-24 rounded-full border-2 border-dashed border-purple-500 items-center justify-center overflow-hidden">
