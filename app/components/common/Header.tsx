@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import React from "react";
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Platform, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const AVATAR_URL =
@@ -41,36 +41,50 @@ export default function Header({
   };
 
   return (
-    <SafeAreaView edges={["top"]} style={styles.container}>
-      <View style={styles.content}>
+    <SafeAreaView
+      edges={["top"]}
+      className="bg-[#0EA5E9] shadow-sm pb-4"
+      style={Platform.select({
+        android: { elevation: 4, backgroundColor: "#0EA5E9" },
+        ios: {
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          backgroundColor: "#0EA5E9",
+        },
+        default: { backgroundColor: "#0EA5E9" },
+      })}
+    >
+      <View className="flex-row items-center justify-between px-4 pb-3 pt-1">
         {/* Left section - Back button or spacer */}
-        <View style={styles.leftSection}>
+        <View className="w-10">
           {showBack && (
-            <TouchableOpacity onPress={handleBackPress} style={styles.iconButton}>
+            <TouchableOpacity onPress={handleBackPress}>
               <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
             </TouchableOpacity>
           )}
         </View>
 
         {/* Center section - Title */}
-        <View style={styles.centerSection}>
-          <Text style={styles.title}>{title}</Text>
+        <View className="flex-1 items-center justify-center">
+          <Text className="text-lg font-bold text-white">{title}</Text>
         </View>
 
         {/* Right section - Avatar or icon */}
-        <View style={styles.rightSection}>
+        <View className="w-10 items-end">
           {rightIcon ? (
             <TouchableOpacity
               onPress={onRightIconPress || handleAvatarPress}
-              style={styles.iconButton}
+              className="p-1"
             >
               <Ionicons name={rightIcon} size={24} color="#FFFFFF" />
             </TouchableOpacity>
           ) : showAvatar ? (
-            <TouchableOpacity onPress={handleAvatarPress} style={styles.avatarButton}>
+            <TouchableOpacity onPress={handleAvatarPress} className="p-0.5">
               <Image
                 source={{ uri: AVATAR_URL }}
-                style={styles.avatar}
+                className="w-9 h-9 rounded-full border-2 border-white/50"
                 resizeMode="cover"
               />
             </TouchableOpacity>
@@ -80,58 +94,3 @@ export default function Header({
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#0EA5E9", // Sky blue - same as bottom navigation
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-    paddingTop: 4,
-  },
-  leftSection: {
-    width: 40,
-  },
-  centerSection: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  rightSection: {
-    width: 40,
-    alignItems: "flex-end",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#FFFFFF",
-  },
-  iconButton: {
-    padding: 4,
-  },
-  avatarButton: {
-    padding: 2,
-  },
-  avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    borderWidth: 2,
-    borderColor: "rgba(255, 255, 255, 0.5)",
-  },
-});
