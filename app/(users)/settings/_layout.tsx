@@ -6,7 +6,6 @@ export default function SettingsLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
         animation: "slide_from_right",
         header: ({ options, route, navigation, back }) => {
           const isIndex = route.name === "index";
@@ -25,12 +24,14 @@ export default function SettingsLayout() {
         name="index"
         options={{
           title: "Cài đặt",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="profile"
         options={{
           title: "Hồ sơ cá nhân",
+          headerShown: true,
         }}
       />
     </Stack>

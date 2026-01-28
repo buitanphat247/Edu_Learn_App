@@ -3,8 +3,8 @@ import { FlashList } from "@shopify/flash-list";
 import React, { useMemo, useState } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import FeatureCard from "../components/features/FeatureCard";
-import FeaturesHeader from "../components/features/FeaturesHeader";
+import FeatureCard from "../../components/features/FeatureCard";
+import FeaturesHeader from "../../components/features/FeaturesHeader";
 
 const NUM_COLUMNS = 3;
 const GAP = 8;
@@ -144,7 +144,7 @@ export default function Features() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["left", "right"]}>
+    <SafeAreaView style={{ flex: 1 }} edges={["left", "right", "top"]}>
       <FlashList
         data={filteredItems}
         renderItem={renderItem}

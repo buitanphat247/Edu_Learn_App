@@ -173,7 +173,7 @@ export default function Events() {
   const filteredEvents = getFilteredEvents();
 
   const renderHeader = () => (
-    <View className="pb-2">
+    <View className="pb-4">
       {/* Welcome Card */}
       <View className="mb-4">
         <WelcomeSection user={mockUser} />

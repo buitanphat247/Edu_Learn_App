@@ -30,7 +30,7 @@ export default function EventList({
       ItemSeparatorComponent={() => <View className="h-3" />}
       contentContainerStyle={{
         paddingHorizontal: 16,
-        paddingBottom: 8,
+        paddingBottom: 16,
         flexGrow: 1,
       }}
       showsVerticalScrollIndicator={false}

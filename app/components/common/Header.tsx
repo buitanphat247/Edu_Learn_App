@@ -43,7 +43,7 @@ export default function Header({
   return (
     <SafeAreaView
       edges={["top"]}
-      className="bg-[#0EA5E9] shadow-sm pb-4"
+      className="bg-[#0EA5E9] shadow-sm "
       style={Platform.select({
         android: { elevation: 4, backgroundColor: "#0EA5E9" },
         ios: {
@@ -56,7 +56,7 @@ export default function Header({
         default: { backgroundColor: "#0EA5E9" },
       })}
     >
-      <View className="flex-row items-center justify-between px-4 pb-3 pt-1">
+      <View className="flex-row items-center justify-between px-4 pb-3">
         {/* Left section - Back button or spacer */}
         <View className="w-10">
           {showBack && (

@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity } from "react-native";
 
 interface FilterTab {
   id: string;
@@ -12,7 +12,11 @@ interface EventFilterTabsProps {
   onTabChange: (tabId: string) => void;
 }
 
-export default function EventFilterTabs({ tabs, activeTab, onTabChange }: EventFilterTabsProps) {
+export default function EventFilterTabs({
+  tabs,
+  activeTab,
+  onTabChange,
+}: EventFilterTabsProps) {
   return (
     <ScrollView
       horizontal
@@ -25,9 +29,7 @@ export default function EventFilterTabs({ tabs, activeTab, onTabChange }: EventF
           <TouchableOpacity
             key={tab.id}
             className={`px-4 py-2 rounded-full mr-2 ${
-              isActive
-                ? "bg-violet-500"
-                : "bg-white border border-gray-200"
+              isActive ? "bg-violet-500" : "bg-white border border-gray-200"
             }`}
             onPress={() => onTabChange(tab.id)}
           >

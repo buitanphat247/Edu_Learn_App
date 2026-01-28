@@ -145,7 +145,7 @@ export default function HomeScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingBottom: 8,
+          paddingBottom: 16,
           paddingHorizontal: 16,
         }}
       >

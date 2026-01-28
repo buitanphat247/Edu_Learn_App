@@ -31,7 +31,7 @@ const tabs = [
     name: "features",
     title: "Tính năng",
     icon: "grid" as keyof typeof Ionicons.glyphMap,
-    headerShown: true,
+    headerShown: false,
   },
   {
     name: "settings",
