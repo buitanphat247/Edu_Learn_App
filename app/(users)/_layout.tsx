@@ -37,7 +37,7 @@ const tabs = [
     name: "settings",
     title: "Cài đặt",
     icon: "settings" as keyof typeof Ionicons.glyphMap,
-    headerShown: true,
+    headerShown: false,
   },
 ];
 

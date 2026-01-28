@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
@@ -10,14 +11,26 @@ interface User {
 
 interface WelcomeSectionProps {
   user: User;
+  onAvatarPress?: () => void;
 }
 
-export default function WelcomeSection({ user }: WelcomeSectionProps) {
+export default function WelcomeSection({ user, onAvatarPress }: WelcomeSectionProps) {
+  const router = useRouter();
+
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return "Chào buổi sáng";
     if (hour < 18) return "Chào buổi chiều";
     return "Chào buổi tối";
+  };
+
+  const handleAvatarPress = () => {
+    if (onAvatarPress) {
+      onAvatarPress();
+    } else {
+      // Navigate to settings/profile tab
+      router.push("/settings");
+    }
   };
 
   return (
@@ -35,7 +48,7 @@ export default function WelcomeSection({ user }: WelcomeSectionProps) {
             </Text>
           </View>
         </View>
-        <TouchableOpacity className="relative">
+        <TouchableOpacity className="relative" onPress={handleAvatarPress}>
           <Image
             source={{ uri: user.avatar }}
             className="w-14 h-14 rounded-full border-[3px] border-sky-500"
