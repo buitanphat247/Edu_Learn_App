@@ -13,7 +13,7 @@ const tabs = [
     name: "index",
     title: "Trang chủ",
     icon: "home" as keyof typeof Ionicons.glyphMap,
-    headerShown: true,
+    headerShown: false,
   },
   {
     name: "news",
@@ -25,7 +25,7 @@ const tabs = [
     name: "events",
     title: "Sự kiện",
     icon: "calendar" as keyof typeof Ionicons.glyphMap,
-    headerShown: DEFAULT_HEADER_SHOWN,
+    headerShown: false,
   },
   {
     name: "features",

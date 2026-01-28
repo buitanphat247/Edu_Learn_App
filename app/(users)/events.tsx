@@ -1,17 +1,27 @@
 import React, { useState } from "react";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   EventData,
   EventDetailModal,
   EventList,
+  EventSearchBar,
   EventTabs,
 } from "../components/events_user";
+import { WelcomeSection } from "../components/home_user";
 
 // Filter tabs
 const filterTabs = [
   { id: "upcoming", label: "Sắp tới" },
   { id: "past", label: "Đã qua" },
 ];
+
+// Mock user for WelcomeSection
+const mockUser = {
+  name: "Nguyễn Văn A",
+  avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+  role: "Học viên",
+};
 
 // Mock events data
 const mockEvents: EventData[] = [
@@ -162,23 +172,41 @@ export default function Events() {
 
   const filteredEvents = getFilteredEvents();
 
-  return (
-    <SafeAreaView className="flex-1 bg-slate-50" edges={["left", "right"]}>
+  const renderHeader = () => (
+    <View className="pb-2">
+      {/* Welcome Card */}
+      <View className="mb-4">
+        <WelcomeSection user={mockUser} />
+      </View>
+
+      {/* Search Bar */}
+      <EventSearchBar
+        onFilterPress={() => {
+          console.log("Filter pressed");
+        }}
+      />
+
       {/* Filter Tabs */}
       <EventTabs
         tabs={filterTabs}
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
+    </View>
+  );
 
-      {/* Events List */}
+  return (
+    <SafeAreaView
+      className="flex-1 bg-slate-50"
+      edges={["left", "right", "top"]}
+    >
       <EventList
         events={filteredEvents}
         onEventPress={handleEventPress}
         onJoinPress={handleJoinPress}
+        ListHeaderComponent={renderHeader}
       />
 
-      {/* Event Detail Modal */}
       <EventDetailModal
         isVisible={!!selectedEvent}
         event={selectedEvent}

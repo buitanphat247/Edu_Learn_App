@@ -2,11 +2,11 @@ import React from "react";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
-    ClassData,
-    MotivationalBanner,
-    QuickActions,
-    WelcomeSection,
-    YourClasses,
+  ClassData,
+  MotivationalBanner,
+  QuickActions,
+  WelcomeSection,
+  YourClasses,
 } from "../components/home_user";
 
 // Mock user data
@@ -138,7 +138,10 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView className="bg-[#F8FAFC] flex-1" edges={["left", "right"]}>
+    <SafeAreaView
+      className="bg-[#F8FAFC] flex-1"
+      edges={["left", "right", "top"]}
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{

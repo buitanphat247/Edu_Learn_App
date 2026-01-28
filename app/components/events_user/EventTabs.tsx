@@ -18,7 +18,7 @@ export default function EventTabs({
   onTabChange,
 }: EventTabsProps) {
   return (
-    <View className="flex-row px-4 py-3 bg-slate-50">
+    <View className="flex-row bg-slate-50">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
         return (

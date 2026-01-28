@@ -14,7 +14,10 @@ interface WelcomeSectionProps {
   onAvatarPress?: () => void;
 }
 
-export default function WelcomeSection({ user, onAvatarPress }: WelcomeSectionProps) {
+export default function WelcomeSection({
+  user,
+  onAvatarPress,
+}: WelcomeSectionProps) {
   const router = useRouter();
 
   const getGreeting = () => {
@@ -34,28 +37,26 @@ export default function WelcomeSection({ user, onAvatarPress }: WelcomeSectionPr
   };
 
   return (
-    <View className="pt-4">
-      <View className="flex-row justify-between items-center px-5 py-5 bg-white rounded-2xl shadow-sm border border-gray-200">
-        <View className="flex-1">
-          <Text className="text-sm text-slate-500 mb-1">{getGreeting()},</Text>
-          <Text className="text-2xl font-bold text-slate-800 mb-2">
-            {user.name} 👋
+    <View className="flex-row justify-between items-center px-5 py-5 bg-white rounded-2xl shadow-sm border border-gray-200">
+      <View className="flex-1">
+        <Text className="text-sm text-slate-500 mb-1">{getGreeting()},</Text>
+        <Text className="text-2xl font-bold text-slate-800 mb-2">
+          {user.name} 👋
+        </Text>
+        <View className="flex-row items-center bg-sky-100 px-2.5 py-1 rounded-xl self-start">
+          <Ionicons name="person-outline" size={14} color="#0EA5E9" />
+          <Text className="text-xs text-sky-500 font-semibold ml-1">
+            {user.role}
           </Text>
-          <View className="flex-row items-center bg-sky-100 px-2.5 py-1 rounded-xl self-start">
-            <Ionicons name="person-outline" size={14} color="#0EA5E9" />
-            <Text className="text-xs text-sky-500 font-semibold ml-1">
-              {user.role}
-            </Text>
-          </View>
         </View>
-        <TouchableOpacity className="relative" onPress={handleAvatarPress}>
-          <Image
-            source={{ uri: user.avatar }}
-            className="w-14 h-14 rounded-full border-[3px] border-sky-500"
-          />
-          <View className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-green-500 border-2 border-white" />
-        </TouchableOpacity>
       </View>
+      <TouchableOpacity className="relative" onPress={handleAvatarPress}>
+        <Image
+          source={{ uri: user.avatar }}
+          className="w-14 h-14 rounded-full border-[3px] border-sky-500"
+        />
+        <View className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-green-500 border-2 border-white" />
+      </TouchableOpacity>
     </View>
   );
 }

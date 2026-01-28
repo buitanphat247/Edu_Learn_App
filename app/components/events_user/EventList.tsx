@@ -6,15 +6,18 @@ interface EventListProps {
   events: EventData[];
   onEventPress?: (event: EventData) => void;
   onJoinPress?: (event: EventData) => void;
+  ListHeaderComponent?: React.ComponentType<any> | React.ReactElement | null;
 }
 
 export default function EventList({
   events,
   onEventPress,
   onJoinPress,
+  ListHeaderComponent,
 }: EventListProps) {
   return (
     <FlatList
+      ListHeaderComponent={ListHeaderComponent}
       data={events}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
@@ -27,7 +30,6 @@ export default function EventList({
       ItemSeparatorComponent={() => <View className="h-3" />}
       contentContainerStyle={{
         paddingHorizontal: 16,
-        paddingTop: 8,
         paddingBottom: 8,
         flexGrow: 1,
       }}
