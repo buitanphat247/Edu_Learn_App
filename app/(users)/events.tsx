@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { EventData } from "../components/events_user";
-import EventCard from "../components/events_user/EventCard";
+import {
+  EventData,
+  EventDetailModal,
+  EventList,
+  EventTabs,
+} from "../components/events_user";
 
 // Filter tabs
 const filterTabs = [
@@ -135,6 +138,7 @@ const mockEvents: EventData[] = [
 
 export default function Events() {
   const [activeTab, setActiveTab] = useState("upcoming");
+  const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
 
   const getFilteredEvents = () => {
     const now = new Date();
@@ -145,67 +149,41 @@ export default function Events() {
   };
 
   const handleEventPress = (event: EventData) => {
-    console.log("Event pressed:", event.id);
+    setSelectedEvent(event);
   };
 
   const handleJoinPress = (event: EventData) => {
     console.log("Join event:", event.id);
   };
 
+  const handleCloseModal = () => {
+    setSelectedEvent(null);
+  };
+
   const filteredEvents = getFilteredEvents();
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50" edges={["left", "right"]}>
-      {/* Filter Tabs - Fixed position */}
-      <View className="flex-row px-4 py-3 bg-slate-50">
-        {filterTabs.map((tab) => {
-          const isActive = activeTab === tab.id;
-          return (
-            <TouchableOpacity
-              key={tab.id}
-              className={`flex-1 py-2.5 rounded-full mx-1 ${
-                isActive ? "bg-violet-500" : "bg-white border border-gray-200"
-              }`}
-              onPress={() => setActiveTab(tab.id)}
-            >
-              <Text
-                className={`text-sm font-semibold text-center ${
-                  isActive ? "text-white" : "text-slate-500"
-                }`}
-              >
-                {tab.label}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+      {/* Filter Tabs */}
+      <EventTabs
+        tabs={filterTabs}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
 
       {/* Events List */}
-      <FlatList
-        data={filteredEvents}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <EventCard
-            event={item}
-            onPress={handleEventPress}
-            onJoinPress={handleJoinPress}
-          />
-        )}
-        ItemSeparatorComponent={() => <View className="h-3" />}
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingTop: 8,
-          paddingBottom: 8,
-          flexGrow: 1,
-        }}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <View className="flex-1 items-center justify-center py-20">
-            <Text className="text-slate-400 text-base">
-              Không có sự kiện nào
-            </Text>
-          </View>
-        }
+      <EventList
+        events={filteredEvents}
+        onEventPress={handleEventPress}
+        onJoinPress={handleJoinPress}
+      />
+
+      {/* Event Detail Modal */}
+      <EventDetailModal
+        isVisible={!!selectedEvent}
+        event={selectedEvent}
+        onClose={handleCloseModal}
+        onJoin={handleJoinPress}
       />
     </SafeAreaView>
   );

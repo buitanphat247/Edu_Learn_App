@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import EventCard, { EventData } from "./EventCard";
 
 interface EventListProps {
@@ -13,27 +13,30 @@ export default function EventList({
   onEventPress,
   onJoinPress,
 }: EventListProps) {
-  if (events.length === 0) {
-    return (
-      <View className="flex-1 items-center justify-center py-20">
-        <Text className="text-slate-400 text-base">Không có sự kiện nào</Text>
-      </View>
-    );
-  }
-
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingTop: 8, paddingBottom: 24 }}
-    >
-      {events.map((event) => (
+    <FlatList
+      data={events}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
         <EventCard
-          key={event.id}
-          event={event}
+          event={item}
           onPress={onEventPress}
           onJoinPress={onJoinPress}
         />
-      ))}
-    </ScrollView>
+      )}
+      ItemSeparatorComponent={() => <View className="h-3" />}
+      contentContainerStyle={{
+        paddingHorizontal: 16,
+        paddingTop: 8,
+        paddingBottom: 8,
+        flexGrow: 1,
+      }}
+      showsVerticalScrollIndicator={false}
+      ListEmptyComponent={
+        <View className="flex-1 items-center justify-center py-20">
+          <Text className="text-slate-400 text-base">Không có sự kiện nào</Text>
+        </View>
+      }
+    />
   );
 }

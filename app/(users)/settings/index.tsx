@@ -94,7 +94,7 @@ export default function Settings() {
         )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16 }}
-        columnWrapperStyle={{ justifyContent: "space-between", gap: 12 }}
+        columnWrapperStyle={{ justifyContent: "space-between" }}
       />
     </SafeAreaView>
   );
