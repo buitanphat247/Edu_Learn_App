@@ -32,7 +32,7 @@ export default function WelcomeSection({
       onAvatarPress();
     } else {
       // Navigate to settings/profile tab
-      router.push("/settings");
+      router.push("/settings/profile");
     }
   };
 

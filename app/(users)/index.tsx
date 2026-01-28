@@ -143,7 +143,6 @@ export default function HomeScreen() {
       edges={["left", "right", "top"]}
     >
       <ScrollView
-        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: 16,
           paddingHorizontal: 16,

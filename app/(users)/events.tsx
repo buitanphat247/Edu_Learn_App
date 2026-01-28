@@ -1,27 +1,25 @@
-import React, { useState } from "react";
-import { View } from "react-native";
+import React, { useMemo, useState } from "react";
+import { Platform, Text, View } from "react-native";
+import Animated, {
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SearchBar from "../components/common/SearchBar";
 import {
+  EventCard,
   EventData,
   EventDetailModal,
-  EventList,
-  EventSearchBar,
   EventTabs,
 } from "../components/events_user";
-import { WelcomeSection } from "../components/home_user";
 
 // Filter tabs
 const filterTabs = [
   { id: "upcoming", label: "Sắp tới" },
   { id: "past", label: "Đã qua" },
 ];
-
-// Mock user for WelcomeSection
-const mockUser = {
-  name: "Nguyễn Văn A",
-  avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-  role: "Học viên",
-};
 
 // Mock events data
 const mockEvents: EventData[] = [
@@ -149,6 +147,8 @@ const mockEvents: EventData[] = [
 export default function Events() {
   const [activeTab, setActiveTab] = useState("upcoming");
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const scrollY = useSharedValue(0);
 
   const getFilteredEvents = () => {
     const now = new Date();
@@ -160,6 +160,7 @@ export default function Events() {
 
   const handleEventPress = (event: EventData) => {
     setSelectedEvent(event);
+    setModalVisible(true);
   };
 
   const handleJoinPress = (event: EventData) => {
@@ -167,51 +168,111 @@ export default function Events() {
   };
 
   const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
+  const handleModalHide = () => {
     setSelectedEvent(null);
   };
 
   const filteredEvents = getFilteredEvents();
 
-  const renderHeader = () => (
-    <View className="pb-4">
-      {/* Welcome Card */}
-      <View className="mb-4">
-        <WelcomeSection user={mockUser} />
-      </View>
+  const listData = useMemo(() => {
+    return [
+      { type: "search_bar", id: "sticky_search" },
+      { type: "filter_tabs", id: "filter_tabs" },
+      ...filteredEvents.map((e) => ({ ...e, type: "event_item" })),
+    ];
+  }, [filteredEvents]);
 
-      {/* Search Bar */}
-      <EventSearchBar
-        onFilterPress={() => {
-          console.log("Filter pressed");
-        }}
-      />
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    scrollY.value = event.contentOffset.y;
+  });
 
-      {/* Filter Tabs */}
-      <EventTabs
-        tabs={filterTabs}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-      />
-    </View>
-  );
+  const animatedHeaderStyle = useAnimatedStyle(() => {
+    const isScrolled = scrollY.value > 0;
+    return {
+      shadowOpacity: Platform.OS === "ios" ? withTiming(isScrolled ? 0.08 : 0) : 0,
+      elevation: Platform.OS === "android" ? withTiming(isScrolled ? 4 : 0) : 0,
+      shadowOffset: { width: 0, height: 2 },
+      shadowRadius: 4,
+      shadowColor: "#000",
+      backgroundColor: "#F8FAFC",
+      zIndex: 10,
+    };
+  });
+
+  const renderItem = ({ item }: { item: any }) => {
+    switch (item.type) {
+      case "search_bar":
+        return (
+          <Animated.View
+            style={animatedHeaderStyle}
+            className="px-4 pb-2 mb-2"
+          >
+            <SearchBar placeholder="Tìm kiếm sự kiện, workshop..." />
+          </Animated.View>
+        );
+      case "filter_tabs":
+        return (
+          <View className="px-4 pb-4">
+            <EventTabs
+              tabs={filterTabs}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
+          </View>
+        );
+      case "event_item":
+        return (
+          <View className="px-4">
+            <EventCard
+              event={item}
+              onPress={handleEventPress}
+              onJoinPress={handleJoinPress}
+            />
+          </View>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <SafeAreaView
       className="flex-1 bg-slate-50"
       edges={["left", "right", "top"]}
     >
-      <EventList
-        events={filteredEvents}
-        onEventPress={handleEventPress}
-        onJoinPress={handleJoinPress}
-        ListHeaderComponent={renderHeader}
+      <Animated.FlatList
+        data={listData}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        stickyHeaderIndices={[0]}
+        contentContainerStyle={{
+          paddingBottom: 16,
+        }}
+        ItemSeparatorComponent={({ leadingItem }) => {
+          if (leadingItem.type === "event_item") return <View className="h-3" />;
+          return null;
+        }}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          filteredEvents.length === 0 ? (
+            <View className="flex-1 items-center justify-center py-20">
+              <Text className="text-slate-400 text-base">Không có sự kiện nào</Text>
+            </View>
+          ) : null
+        }
       />
 
       <EventDetailModal
-        isVisible={!!selectedEvent}
+        isVisible={isModalVisible}
         event={selectedEvent}
         onClose={handleCloseModal}
         onJoin={handleJoinPress}
+        onModalHide={handleModalHide}
       />
     </SafeAreaView>
   );

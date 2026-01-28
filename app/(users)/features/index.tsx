@@ -158,7 +158,7 @@ export default function Features() {
         )}
         contentContainerStyle={{
           paddingHorizontal: PADDING,
-          paddingBottom: 16,
+          paddingBottom: 24,
         }}
         showsVerticalScrollIndicator={false}
       />

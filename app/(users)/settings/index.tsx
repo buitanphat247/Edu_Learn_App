@@ -82,7 +82,7 @@ export default function Settings() {
           iconBgColor: "bg-purple-50",
           title: "Ngôn ngữ",
           subtitle: "Tiếng Việt, English",
-          onPress: () => console.log("Language"),
+          onPress: () => router.push("/(users)/settings/language"),
         },
         {
           id: "sync",
@@ -91,7 +91,7 @@ export default function Settings() {
           iconBgColor: "bg-cyan-50",
           title: "Đồng bộ dữ liệu",
           subtitle: "Sao lưu tiến độ học tập",
-          onPress: () => console.log("Sync"),
+          onPress: () => router.push("/(users)/settings/sync"),
         },
       ],
     },

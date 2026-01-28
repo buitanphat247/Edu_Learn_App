@@ -1,37 +1,35 @@
 import { Stack } from "expo-router";
 import React from "react";
-import Header from "../../components/common/Header";
-
 export default function SettingsLayout() {
   return (
-    <Stack
-      screenOptions={{
-        animation: "slide_from_right",
-        header: ({ options, route, navigation, back }) => {
-          const isIndex = route.name === "index";
-          return (
-            <Header
-              title={options.title || ""}
-              showBack={!isIndex && !!back}
-              showAvatar={false} // Hide avatar in settings/profile headers to keep it clean or enable if needed
-              onBackPress={() => navigation.goBack()}
-            />
-          );
-        },
-      }}
-    >
+    <Stack>
       <Stack.Screen
         name="index"
         options={{
           title: "Cài đặt",
           headerShown: false,
         }}
+
       />
       <Stack.Screen
         name="profile"
         options={{
           title: "Hồ sơ cá nhân",
-          headerShown: true,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="language"
+        options={{
+          title: "Ngôn ngữ",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="sync"
+        options={{
+          title: "Đồng bộ dữ liệu",
+          headerShown: false,
         }}
       />
     </Stack>

@@ -25,7 +25,7 @@ export default function RootLayout() {
           <Stack.Screen key={screen.name} name={screen.name} />
         ))}
       </Stack>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
     </ThemeProvider>
   );
 }
