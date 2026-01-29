@@ -1,10 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
-import { FlashList } from "@shopify/flash-list";
+import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import { View } from "react-native";
+import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MainHeader from "../../components/common/MainHeader";
 import FeatureCard from "../../components/features/FeatureCard";
-import FeaturesHeader from "../../components/features/FeaturesHeader";
+import { useStickyHeader } from "../../hooks/useStickyHeader";
 
 const NUM_COLUMNS = 3;
 const GAP = 8;
@@ -102,66 +104,111 @@ const featuresItems = [
 ];
 
 export default function Features() {
+  const router = useRouter();
   const [searchText, setSearchText] = useState("");
+  const { scrollHandler, animatedHeaderStyle } = useStickyHeader("#3B82F6");
 
-  const filteredItems = useMemo(() => {
-    if (!searchText.trim()) {
-      return featuresItems;
+  // Format data into rows for grid layout within FlatList
+  const listData = useMemo(() => {
+    let filtered = featuresItems;
+    if (searchText.trim()) {
+      filtered = featuresItems.filter((item) =>
+        item.title.toLowerCase().includes(searchText.toLowerCase())
+      );
     }
-    return featuresItems.filter((item) =>
-      item.title.toLowerCase().includes(searchText.toLowerCase()),
-    );
+
+    const rows = [];
+    for (let i = 0; i < filtered.length; i += NUM_COLUMNS) {
+      rows.push({
+        type: "feature_row",
+        id: `row-${i}`,
+        items: filtered.slice(i, i + NUM_COLUMNS),
+      });
+    }
+
+    return rows;
   }, [searchText]);
 
-  const renderItem = ({
-    item,
-    index,
-  }: {
-    item: (typeof featuresItems)[0];
-    index: number;
-  }) => {
-    const isLastColumn = (index + 1) % NUM_COLUMNS === 0;
-    const isFirstColumn = index % NUM_COLUMNS === 0;
+  const renderItem = ({ item }: { item: any }) => {
+    switch (item.type) {
 
-    return (
-      <View
-        style={{
-          flex: 1,
-          marginLeft: isFirstColumn ? 0 : GAP / 2,
-          marginRight: isLastColumn ? 0 : GAP / 2,
-          marginBottom: GAP,
-        }}
-      >
-        <FeatureCard
-          icon={item.icon}
-          iconColor={item.iconColor}
-          iconBgColor={item.iconBgColor}
-          title={item.title}
-          onPress={item.onPress}
-        />
-      </View>
-    );
+      case "feature_row":
+        return (
+          <View className="flex-row px-3 mb-2 mt-3">
+            {item.items.map((feature: any, index: number) => {
+              const isLastColumn = index === item.items.length - 1;
+              const isFirstColumn = index === 0;
+
+              return (
+                <View
+                  key={feature.id}
+                  style={{
+                    flex: 1,
+                    marginLeft: isFirstColumn ? 0 : GAP / 2,
+                    marginRight: isLastColumn ? 0 : GAP / 2,
+                    // Handle empty slots if needed to maintain size
+                    maxWidth: `${100 / NUM_COLUMNS}%`,
+                  }}
+                >
+                  <FeatureCard
+                    icon={feature.icon}
+                    iconColor={feature.iconColor}
+                    iconBgColor={feature.iconBgColor}
+                    title={feature.title}
+                    onPress={feature.onPress}
+                  />
+                </View>
+              );
+            })}
+            {/* Fill empty spacing for incomplete rows */}
+            {Array.from({ length: NUM_COLUMNS - item.items.length }).map(
+              (_, i) => (
+                <View
+                  key={`empty-${i}`}
+                  style={{
+                    flex: 1,
+                    marginLeft: GAP / 2,
+                    maxWidth: `${100 / NUM_COLUMNS}%`,
+                  }}
+                />
+              )
+            )}
+          </View>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["left", "right", "top"]}>
-      <FlashList
-        data={filteredItems}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={NUM_COLUMNS}
-        ListHeaderComponent={() => (
-          <FeaturesHeader
-            searchText={searchText}
-            onSearchChange={setSearchText}
-          />
-        )}
-        contentContainerStyle={{
-          paddingHorizontal: PADDING,
-          paddingBottom: 24,
-        }}
-        showsVerticalScrollIndicator={false}
-      />
+    <SafeAreaView
+      className="flex-1 bg-[#3B82F6]"
+      edges={["left", "right", "top"]}
+    >
+      <SafeAreaView
+        className="flex-1 bg-white"
+        edges={["bottom"]}
+      >
+        <MainHeader
+          title="Tiện ích"
+          searchPlaceholder="Tìm kiếm tiện ích..."
+          searchValue={searchText}
+          onSearchChange={setSearchText}
+          animatedStyle={animatedHeaderStyle}
+        />
+
+        <Animated.FlatList
+          data={listData}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: 24,
+          }}
+        />
+      </SafeAreaView>
     </SafeAreaView>
   );
 }

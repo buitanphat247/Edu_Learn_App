@@ -16,8 +16,8 @@ export default function YourClasses({
   onEnterPress,
 }: YourClassesProps) {
   return (
-    <View className="mt-2">
-      <View className="flex-row justify-between items-center mb-3">
+    <View style={{ gap: 4 }}>
+      <View className="flex-row justify-between items-center">
         <Text className="text-lg font-bold text-slate-800">
           Lớp học của bạn
         </Text>
@@ -26,14 +26,16 @@ export default function YourClasses({
         </TouchableOpacity>
       </View>
 
-      {classes.map((classItem) => (
-        <ClassCard
-          key={classItem.id}
-          classData={classItem}
-          onPress={onClassPress}
-          onEnterPress={onEnterPress}
-        />
-      ))}
+      <View style={{ gap: 8 }}>
+        {classes.map((classItem) => (
+          <ClassCard
+            key={classItem.id}
+            classData={classItem}
+            onPress={onClassPress}
+            onEnterPress={onEnterPress}
+          />
+        ))}
+      </View>
     </View>
   );
 }

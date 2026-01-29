@@ -1,7 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import React, { ReactNode } from "react";
 import { Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface DetailHeaderProps {
     /** Tiêu đề của header */
@@ -67,10 +69,14 @@ export default function DetailHeader({
     };
 
     return (
-        <View style={{ zIndex: 10 }}>
+        <SafeAreaView
+            edges={["left", "right"]}
+            className="bg-[#3B82F6] px-4 pb-2 gap-3"
+            style={{ zIndex: 10 }}
+        >
+            <StatusBar style="light" />
             <View
-                className={`flex-row items-center justify-between px-4 py-3 bg-white ${showBorder ? "border-b border-slate-100" : ""
-                    }`}
+                className="flex-row items-center gap-2"
                 style={containerStyle}
             >
                 {/* Left - Back button */}
@@ -78,18 +84,18 @@ export default function DetailHeader({
                     {showBack && (
                         <TouchableOpacity
                             onPress={handleBackPress}
-                            className="w-10 h-10 items-center justify-center -ml-2"
-                            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                            className="w-10 h-10 rounded-xl bg-white/20 items-center justify-center"
+                            activeOpacity={0.7}
                         >
-                            <Ionicons name="arrow-back-outline" size={24} color="#334155" />
+                            <Ionicons name="arrow-back-outline" size={24} color="#FFFFFF" />
                         </TouchableOpacity>
                     )}
                 </View>
 
                 {/* Center - Title */}
-                <View className="flex-1 ml-1">
+                <View className="flex-1 items-center">
                     <Text
-                        className="text-lg font-bold text-slate-800"
+                        className="text-xl font-bold text-white text-center"
                         numberOfLines={1}
                     >
                         {title}
@@ -103,27 +109,16 @@ export default function DetailHeader({
                     ) : rightIcon ? (
                         <TouchableOpacity
                             onPress={onRightIconPress}
-                            className="w-10 h-10 items-center justify-center -mr-2"
-                            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                            className="w-10 h-10 rounded-xl bg-white/20 items-center justify-center"
+                            activeOpacity={0.7}
                         >
-                            <Ionicons name={rightIcon} size={22} color="#334155" />
+                            <Ionicons name={rightIcon} size={22} color="#FFFFFF" />
                         </TouchableOpacity>
-                    ) : null}
+                    ) : (
+                        <View className="w-10" />
+                    )}
                 </View>
             </View>
-            {/* Bottom Shadow Bar */}
-            <View
-                style={{
-                    height: 4,
-                    backgroundColor: "transparent",
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 3,
-                    elevation: 4,
-                    marginTop: -4,
-                }}
-            />
-        </View>
+        </SafeAreaView>
     );
 }

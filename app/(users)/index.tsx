@@ -1,13 +1,16 @@
-import React from "react";
-import { ScrollView } from "react-native";
+import { useRouter } from "expo-router";
+import React, { useMemo } from "react";
+import { View } from "react-native";
+import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MainHeader from "../components/common/MainHeader";
 import {
   ClassData,
-  MotivationalBanner,
   QuickActions,
   WelcomeSection,
   YourClasses,
 } from "../components/home_user";
+import { useStickyHeader } from "../hooks/useStickyHeader";
 
 // Mock user data
 const user = {
@@ -117,6 +120,9 @@ const quickActions = [
 ];
 
 export default function HomeScreen() {
+  const router = useRouter();
+  const { scrollHandler, animatedHeaderStyle } = useStickyHeader("#3B82F6");
+
   const handleSeeAllClasses = () => {
     console.log("See all classes");
   };
@@ -133,42 +139,72 @@ export default function HomeScreen() {
     console.log("Action pressed:", action.label);
   };
 
-  const handleStartGoal = () => {
-    console.log("Start goal");
+  const listData = useMemo(() => {
+    return [
+      { type: "welcome", id: "welcome" },
+      { type: "quick_actions", id: "quick_actions" },
+      { type: "your_classes", id: "your_classes" },
+    ];
+  }, []);
+
+  const renderItem = ({ item }: { item: any }) => {
+    switch (item.type) {
+
+      case "welcome":
+        return (
+          <View className="px-4 mb-2 mt-3">
+            <WelcomeSection user={user} />
+          </View>
+        );
+      case "quick_actions":
+        return (
+          <View className="px-4 mb-2">
+            <QuickActions
+              actions={quickActions}
+              onActionPress={handleQuickActionPress}
+            />
+          </View>
+        );
+      case "your_classes":
+        return (
+          <View className="px-4">
+            <YourClasses
+              classes={yourClasses}
+              onSeeAllPress={handleSeeAllClasses}
+              onClassPress={handleClassPress}
+              onEnterPress={handleEnterClass}
+            />
+          </View>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
     <SafeAreaView
-      className="bg-[#F8FAFC] flex-1"
-      edges={["left", "right", "top"]}
+      className="bg-[#3B82F6] flex-1"
+      edges={["top", "left", "right"]}
     >
-      <ScrollView
-        contentContainerStyle={{
-          paddingBottom: 16,
-          paddingHorizontal: 16,
-        }}
+      <SafeAreaView
+        className="bg-[#F8FAFC] flex-1"
+        edges={["bottom"]}
       >
-        <WelcomeSection user={user} />
-
-        <QuickActions
-          actions={quickActions}
-          onActionPress={handleQuickActionPress}
+        <MainHeader
+          title="Trang chủ"
+          searchPlaceholder="Tìm kiếm khóa học, tài liệu..."
+          animatedStyle={animatedHeaderStyle}
         />
 
-        <YourClasses
-          classes={yourClasses}
-          onSeeAllPress={handleSeeAllClasses}
-          onClassPress={handleClassPress}
-          onEnterPress={handleEnterClass}
+        <Animated.FlatList
+          data={listData}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={false}
         />
-
-        <MotivationalBanner
-          title="🎯 Mục tiêu hôm nay"
-          subtitle="Hoàn thành 2 bài học để đạt streak 7 ngày!"
-          buttonText="Bắt đầu"
-          onPress={handleStartGoal}
-        />
-      </ScrollView>
+      </SafeAreaView>
     </SafeAreaView>
   );
 }

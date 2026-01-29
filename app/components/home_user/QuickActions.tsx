@@ -28,8 +28,8 @@ export default function QuickActions({
   onActionPress,
 }: QuickActionsProps) {
   return (
-    <View className="mt-2">
-      <Text className="text-lg font-bold text-slate-800 mb-3">
+    <View style={{ gap: 5 }}>
+      <Text className="text-lg font-bold text-slate-800">
         Truy cập nhanh
       </Text>
       <View className="flex-row flex-wrap gap-3">

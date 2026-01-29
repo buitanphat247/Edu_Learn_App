@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -15,23 +16,28 @@ export default function ProfileHeader() {
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
             style={{
-                paddingTop: insets.top + 16,
+                paddingTop: insets.top + 8,
                 paddingBottom: 60,
                 paddingHorizontal: 16,
                 borderBottomLeftRadius: 24,
                 borderBottomRightRadius: 24,
             }}
         >
-            <View className="flex-row items-center justify-between">
+            <StatusBar style="light" />
+            <View className="flex-row items-center justify-between py-2">
                 <TouchableOpacity
                     onPress={() => router.back()}
-                    className="w-9 h-9 rounded-full bg-white/30 items-center justify-center"
+                    className="w-10 h-10 rounded-xl bg-white/20 items-center justify-center"
+                    activeOpacity={0.7}
                 >
-                    <Ionicons name="chevron-back" size={20} color="#FFFFFF" />
+                    <Ionicons name="arrow-back-outline" size={24} color="#FFFFFF" />
                 </TouchableOpacity>
-                <Text className="text-white text-lg font-bold">Profile</Text>
-                <TouchableOpacity className="w-9 h-9 rounded-full bg-white/30 items-center justify-center">
-                    <Ionicons name="ellipsis-horizontal" size={20} color="#FFFFFF" />
+                <Text className="text-xl font-bold text-white text-center">Hồ sơ</Text>
+                <TouchableOpacity
+                    className="w-10 h-10 rounded-xl bg-white/20 items-center justify-center"
+                    activeOpacity={0.7}
+                >
+                    <Ionicons name="ellipsis-horizontal" size={24} color="#FFFFFF" />
                 </TouchableOpacity>
             </View>
         </LinearGradient>

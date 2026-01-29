@@ -2,9 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import { SectionList, Text, View } from "react-native";
+import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MainHeader from "../../components/common/MainHeader";
 import LogoutCard from "../../components/settings/LogoutCard";
 import SettingCard from "../../components/settings/SettingCard";
+import { useStickyHeader } from "../../hooks/useStickyHeader";
+
+const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
 interface SettingItem {
   id: string;
@@ -23,6 +28,7 @@ interface SettingSection {
 
 export default function Settings() {
   const router = useRouter();
+  const { scrollHandler, animatedHeaderStyle } = useStickyHeader("#3B82F6");
 
   const handleLogout = () => {
     // TODO: Implement logout logic
@@ -185,19 +191,27 @@ export default function Settings() {
 
   return (
     <SafeAreaView
-      className="bg-[#F8FAFC] flex-1"
+      className="bg-[#3B82F6] flex-1"
       edges={["left", "right", "top"]}
     >
-      <SectionList
-        sections={sections}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        renderSectionHeader={renderSectionHeader}
-        ListFooterComponent={() => <LogoutCard onPress={handleLogout} />}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
-        stickySectionHeadersEnabled={false}
-      />
+      <SafeAreaView
+        className="bg-[#F8FAFC] flex-1"
+        edges={["bottom"]}
+      >
+        <MainHeader title="Cài đặt" hideSearch animatedStyle={animatedHeaderStyle} />
+        <AnimatedSectionList
+          sections={sections as any}
+          keyExtractor={(item: any) => item.id}
+          renderItem={renderItem as any}
+          renderSectionHeader={renderSectionHeader as any}
+          ListFooterComponent={() => <LogoutCard onPress={handleLogout} />}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16 }}
+          stickySectionHeadersEnabled={false}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
+        />
+      </SafeAreaView>
     </SafeAreaView>
   );
 }

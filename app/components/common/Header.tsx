@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import React from "react";
-import { Image, Platform, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const AVATAR_URL =
@@ -43,18 +43,13 @@ export default function Header({
   return (
     <SafeAreaView
       edges={["top"]}
-      className="bg-[#0EA5E9] shadow-sm "
-      style={Platform.select({
-        android: { elevation: 4, backgroundColor: "#0EA5E9" },
-        ios: {
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
-          backgroundColor: "#0EA5E9",
-        },
-        default: { backgroundColor: "#0EA5E9" },
-      })}
+      className="bg-[#3B82F6]"
+      style={{
+        zIndex: 9999,
+        borderBottomWidth: 0,
+        elevation: 0,
+        shadowOpacity: 0,
+      }}
     >
       <View className="flex-row items-center justify-between px-4 pb-3">
         {/* Left section - Back button or spacer */}

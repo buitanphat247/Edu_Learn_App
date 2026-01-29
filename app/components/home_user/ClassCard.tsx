@@ -23,7 +23,7 @@ export default function ClassCard({
 }: ClassCardProps) {
   return (
     <TouchableOpacity
-      className="flex-row bg-white rounded-xl p-3 mb-3 items-center shadow-sm border border-gray-200"
+      className="flex-row bg-white rounded-xl p-3 items-center shadow-sm border border-gray-200"
       onPress={() => onPress?.(classData)}
       activeOpacity={0.8}
     >

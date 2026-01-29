@@ -15,21 +15,19 @@ export default function MotivationalBanner({
   onPress,
 }: MotivationalBannerProps) {
   return (
-    <View className="">
-      <View className="flex-row bg-sky-500 rounded-2xl p-4 items-center">
-        <View className="flex-1">
-          <Text className="text-base font-bold text-white mb-1">{title}</Text>
-          <Text className="text-sm text-white/90">{subtitle}</Text>
-        </View>
-        <TouchableOpacity
-          className="bg-white px-4 py-2 rounded-full"
-          onPress={onPress}
-        >
-          <Text className="text-sm font-semibold text-sky-500">
-            {buttonText}
-          </Text>
-        </TouchableOpacity>
+    <View className="flex-row bg-sky-500 rounded-2xl p-4 items-center">
+      <View className="flex-1">
+        <Text className="text-base font-bold text-white mb-1">{title}</Text>
+        <Text className="text-sm text-white/90">{subtitle}</Text>
       </View>
+      <TouchableOpacity
+        className="bg-white px-4 py-2 rounded-full"
+        onPress={onPress}
+      >
+        <Text className="text-sm font-semibold text-sky-500">
+          {buttonText}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }

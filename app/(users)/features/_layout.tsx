@@ -7,7 +7,7 @@ export default function FeaturesLayout() {
       screenOptions={{
         headerShown: false,
         animation: "slide_from_right",
-        contentStyle: { backgroundColor: "#F8FAFC" },
+        contentStyle: { backgroundColor: "white" },
       }}
     >
       <Stack.Screen name="index" />

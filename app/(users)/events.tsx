@@ -1,19 +1,16 @@
+import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
-import { Platform, Text, View } from "react-native";
-import Animated, {
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { Text, View } from "react-native";
+import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SearchBar from "../components/common/SearchBar";
+import MainHeader from "../components/common/MainHeader";
 import {
   EventCard,
   EventData,
   EventDetailModal,
   EventTabs,
 } from "../components/events_user";
+import { useStickyHeader } from "../hooks/useStickyHeader";
 
 // Filter tabs
 const filterTabs = [
@@ -145,10 +142,11 @@ const mockEvents: EventData[] = [
 ];
 
 export default function Events() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("upcoming");
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const scrollY = useSharedValue(0);
+  const { scrollHandler, animatedHeaderStyle } = useStickyHeader("#3B82F6");
 
   const getFilteredEvents = () => {
     const now = new Date();
@@ -179,43 +177,17 @@ export default function Events() {
 
   const listData = useMemo(() => {
     return [
-      { type: "search_bar", id: "sticky_search" },
       { type: "filter_tabs", id: "filter_tabs" },
       ...filteredEvents.map((e) => ({ ...e, type: "event_item" })),
     ];
   }, [filteredEvents]);
 
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    scrollY.value = event.contentOffset.y;
-  });
-
-  const animatedHeaderStyle = useAnimatedStyle(() => {
-    const isScrolled = scrollY.value > 0;
-    return {
-      shadowOpacity: Platform.OS === "ios" ? withTiming(isScrolled ? 0.08 : 0) : 0,
-      elevation: Platform.OS === "android" ? withTiming(isScrolled ? 4 : 0) : 0,
-      shadowOffset: { width: 0, height: 2 },
-      shadowRadius: 4,
-      shadowColor: "#000",
-      backgroundColor: "#F8FAFC",
-      zIndex: 10,
-    };
-  });
-
   const renderItem = ({ item }: { item: any }) => {
     switch (item.type) {
-      case "search_bar":
-        return (
-          <Animated.View
-            style={animatedHeaderStyle}
-            className="px-4 pb-2 mb-2"
-          >
-            <SearchBar placeholder="Tìm kiếm sự kiện, workshop..." />
-          </Animated.View>
-        );
+
       case "filter_tabs":
         return (
-          <View className="px-4 pb-4">
+          <View className="px-4 pb-4 mt-3">
             <EventTabs
               tabs={filterTabs}
               activeTab={activeTab}
@@ -240,40 +212,48 @@ export default function Events() {
 
   return (
     <SafeAreaView
-      className="flex-1 bg-slate-50"
-      edges={["left", "right", "top"]}
+      className="flex-1 bg-[#3B82F6]"
+      edges={["top", "left", "right"]}
     >
-      <Animated.FlatList
-        data={listData}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        onScroll={scrollHandler}
-        scrollEventThrottle={16}
-        stickyHeaderIndices={[0]}
-        contentContainerStyle={{
-          paddingBottom: 16,
-        }}
-        ItemSeparatorComponent={({ leadingItem }) => {
-          if (leadingItem.type === "event_item") return <View className="h-3" />;
-          return null;
-        }}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          filteredEvents.length === 0 ? (
-            <View className="flex-1 items-center justify-center py-20">
-              <Text className="text-slate-400 text-base">Không có sự kiện nào</Text>
-            </View>
-          ) : null
-        }
-      />
+      <SafeAreaView
+        className="flex-1 bg-slate-50"
+        edges={["bottom"]}
+      >
+        <MainHeader
+          title="Sự kiện"
+          searchPlaceholder="Tìm kiếm sự kiện, workshop..."
+          animatedStyle={animatedHeaderStyle}
+        />
 
-      <EventDetailModal
-        isVisible={isModalVisible}
-        event={selectedEvent}
-        onClose={handleCloseModal}
-        onJoin={handleJoinPress}
-        onModalHide={handleModalHide}
-      />
+        <Animated.FlatList
+          data={listData}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
+
+          ItemSeparatorComponent={({ leadingItem }) => {
+            if (leadingItem.type === "event_item") return <View className="h-3" />;
+            return null;
+          }}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            filteredEvents.length === 0 ? (
+              <View className="flex-1 items-center justify-center py-20">
+                <Text className="text-slate-400 text-base">Không có sự kiện nào</Text>
+              </View>
+            ) : null
+          }
+        />
+
+        <EventDetailModal
+          isVisible={isModalVisible}
+          event={selectedEvent}
+          onClose={handleCloseModal}
+          onJoin={handleJoinPress}
+          onModalHide={handleModalHide}
+        />
+      </SafeAreaView>
     </SafeAreaView>
   );
 }
