@@ -206,9 +206,10 @@ export default function Settings() {
           renderSectionHeader={renderSectionHeader as any}
           ListFooterComponent={() => <LogoutCard onPress={handleLogout} />}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16 }}
+          contentContainerStyle={{ paddingHorizontal: 16 }}
           stickySectionHeadersEnabled={false}
           onScroll={scrollHandler}
+          className="mt-3"
           scrollEventThrottle={16}
         />
       </SafeAreaView>
