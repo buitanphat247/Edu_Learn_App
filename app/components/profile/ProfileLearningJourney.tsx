@@ -10,7 +10,7 @@ export default function ProfileLearningJourney() {
             </Text>
 
             <View style={{ gap: 12 }}>
-                <TouchableOpacity className="flex-row items-center bg-white rounded-2xl px-4 py-4 border border-slate-100 shadow-sm">
+                <TouchableOpacity className="flex-row items-center bg-white rounded-2xl px-4 py-4 border border-slate-200 shadow-sm">
                     <View className="w-10 h-10 rounded-full bg-amber-50 items-center justify-center mr-3">
                         <Ionicons name="compass-outline" size={22} color="#F59E0B" />
                     </View>
@@ -25,7 +25,7 @@ export default function ProfileLearningJourney() {
                     <Ionicons name="chevron-forward" size={18} color="#CBD5E1" />
                 </TouchableOpacity>
 
-                <TouchableOpacity className="flex-row items-center bg-white rounded-2xl px-4 py-4 border border-slate-100 shadow-sm">
+                <TouchableOpacity className="flex-row items-center bg-white rounded-2xl px-4 py-4 border border-slate-200 shadow-sm">
                     <View className="w-10 h-10 rounded-full bg-rose-50 items-center justify-center mr-3">
                         <Ionicons name="bookmark-outline" size={22} color="#FB7185" />
                     </View>
@@ -40,7 +40,7 @@ export default function ProfileLearningJourney() {
                     <Ionicons name="chevron-forward" size={18} color="#CBD5E1" />
                 </TouchableOpacity>
 
-                <TouchableOpacity className="flex-row items-center bg-white rounded-2xl px-4 py-4 border border-slate-100 shadow-sm">
+                <TouchableOpacity className="flex-row items-center bg-white rounded-2xl px-4 py-4 border border-slate-200 shadow-sm">
                     <View className="w-10 h-10 rounded-full bg-sky-50 items-center justify-center mr-3">
                         <Ionicons name="calendar-outline" size={22} color="#0EA5E9" />
                     </View>

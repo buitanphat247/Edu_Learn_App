@@ -1,9 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import React, { ReactNode } from "react";
 import { Text, TouchableOpacity, View, ViewStyle } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 interface DetailHeaderProps {
     /** Tiêu đề của header */
@@ -18,36 +17,10 @@ interface DetailHeaderProps {
     onRightIconPress?: () => void;
     /** Component tùy chỉnh bên phải (thay thế rightIcon) */
     rightComponent?: ReactNode;
-    /** Hiển thị border dưới header (mặc định: true) */
-    showBorder?: boolean;
     /** Style tùy chỉnh cho container */
     containerStyle?: ViewStyle;
 }
 
-/**
- * DetailHeader - Header component dành cho các trang chi tiết
- *
- * Sử dụng cho: Chi tiết tin tức, Cài đặt ngôn ngữ, Profile, v.v.
- *
- * @example
- * // Cơ bản - chỉ có title và nút back
- * <DetailHeader title="Ngôn ngữ" />
- *
- * @example
- * // Với icon bên phải
- * <DetailHeader
- *   title="Chi tiết tin tức"
- *   rightIcon="share-outline"
- *   onRightIconPress={() => handleShare()}
- * />
- *
- * @example
- * // Với custom component bên phải
- * <DetailHeader
- *   title="Hồ sơ"
- *   rightComponent={<EditButton />}
- * />
- */
 export default function DetailHeader({
     title,
     showBack = true,
@@ -55,23 +28,21 @@ export default function DetailHeader({
     rightIcon,
     onRightIconPress,
     rightComponent,
-    showBorder = true,
     containerStyle,
 }: DetailHeaderProps) {
-    const router = useRouter();
+    const navigation = useNavigation();
 
     const handleBackPress = () => {
         if (onBackPress) {
             onBackPress();
-        } else {
-            router.back();
+        } else if (navigation.canGoBack()) {
+            navigation.goBack();
         }
     };
 
     return (
-        <SafeAreaView
-            edges={["left", "right"]}
-            className="bg-[#3B82F6] px-4 pb-2 gap-3"
+        <View
+            className="bg-[#3B82F6] px-4 pb-3 pt-2 gap-3"
             style={{ zIndex: 10 }}
         >
             <StatusBar style="light" />
@@ -119,6 +90,6 @@ export default function DetailHeader({
                     )}
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     );
 }

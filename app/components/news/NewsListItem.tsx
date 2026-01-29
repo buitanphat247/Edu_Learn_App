@@ -35,7 +35,7 @@ export default function NewsListItem({
 
     return (
         <TouchableOpacity
-            className=" flex-row bg-white p-3 rounded-2xl border border-slate-100 shadow-sm"
+            className=" flex-row bg-white p-3 rounded-2xl border border-slate-200 shadow-sm"
             onPress={onPress}
             activeOpacity={0.7}
         >

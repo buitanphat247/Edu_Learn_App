@@ -22,7 +22,7 @@ export default function SettingCard({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="bg-white rounded-2xl p-4 mb-3 border border-slate-100 flex-row items-center justify-between shadow-sm"
+      className="bg-white rounded-2xl p-4 mb-3 border border-slate-200 flex-row items-center justify-between shadow-sm"
       activeOpacity={0.7}
     >
       <View className="flex-row items-center flex-1">

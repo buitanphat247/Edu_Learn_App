@@ -143,7 +143,7 @@ export default function NewsScreen() {
     );
 
     const handleNewsPress = (id: string) => {
-        router.push(`/(users)/news/${id}`);
+        router.navigate(`/(users)/news/${id}`);
     };
 
     const handlePageChange = (page: number) => {
@@ -219,7 +219,7 @@ export default function NewsScreen() {
                 className="bg-white flex-1"
                 edges={["bottom"]}
             >
-                <StatusBar style="dark" />
+                <StatusBar style="light" />
 
                 <MainHeader
                     title="Tin tức"

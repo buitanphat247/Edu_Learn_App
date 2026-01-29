@@ -134,32 +134,27 @@ export default function Features() {
 
       case "feature_row":
         return (
-          <View className="flex-row px-3 mb-2 mt-3">
-            {item.items.map((feature: any, index: number) => {
-              const isLastColumn = index === item.items.length - 1;
-              const isFirstColumn = index === 0;
-
-              return (
-                <View
-                  key={feature.id}
-                  style={{
-                    flex: 1,
-                    marginLeft: isFirstColumn ? 0 : GAP / 2,
-                    marginRight: isLastColumn ? 0 : GAP / 2,
-                    // Handle empty slots if needed to maintain size
-                    maxWidth: `${100 / NUM_COLUMNS}%`,
-                  }}
-                >
-                  <FeatureCard
-                    icon={feature.icon}
-                    iconColor={feature.iconColor}
-                    iconBgColor={feature.iconBgColor}
-                    title={feature.title}
-                    onPress={feature.onPress}
-                  />
-                </View>
-              );
-            })}
+          <View
+            className="flex-row px-4"
+            style={{ gap: 8 }}
+          >
+            {item.items.map((feature: any) => (
+              <View
+                key={feature.id}
+                style={{
+                  flex: 1,
+                  maxWidth: `${100 / NUM_COLUMNS}%`,
+                }}
+              >
+                <FeatureCard
+                  icon={feature.icon}
+                  iconColor={feature.iconColor}
+                  iconBgColor={feature.iconBgColor}
+                  title={feature.title}
+                  onPress={feature.onPress}
+                />
+              </View>
+            ))}
             {/* Fill empty spacing for incomplete rows */}
             {Array.from({ length: NUM_COLUMNS - item.items.length }).map(
               (_, i) => (
@@ -167,7 +162,6 @@ export default function Features() {
                   key={`empty-${i}`}
                   style={{
                     flex: 1,
-                    marginLeft: GAP / 2,
                     maxWidth: `${100 / NUM_COLUMNS}%`,
                   }}
                 />
@@ -205,7 +199,9 @@ export default function Features() {
           scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
+            paddingTop: 16,
             paddingBottom: 24,
+            gap: 8
           }}
         />
       </SafeAreaView>

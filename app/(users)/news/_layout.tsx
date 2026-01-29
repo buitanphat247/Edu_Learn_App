@@ -6,6 +6,7 @@ export default function NewsLayout() {
         <Stack
             screenOptions={{
                 headerShown: false,
+                presentation: 'transparentModal'
             }}
         >
             <Stack.Screen name="index" />
